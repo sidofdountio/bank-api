@@ -1,0 +1,57 @@
+services:
+  postgre-afriland-visa:
+    container_name: postgre-afriland-db
+    image: postgres:16-alpine
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /data/postgres
+    volumes:
+      - network-paupiere:/data/postgres
+    ports:
+      - ${POSTGRES_PORT_MAPPER}:${POSTGRES_PORT}
+    expose:
+      - ${POSTGRES_PORT_MAPPER}
+    networks:
+      - network-afriland
+
+#  mail-dev:
+#    container_name: mail-dev-fast-gaw
+#    image: maildev/maildev
+#    restart: unless-stopped
+#    ports:
+#      - "1080:1080"
+#      - "1025:1025"
+#      - "587:587"
+
+
+#  fast-gaz-api:
+#    container_name: fast-gaz-api
+#    image: fast-gaz-api:v1
+#    ports:
+#      - "8087:8087"
+#    depends_on:
+#      - postgre-fast-gaz-db
+#    env_file:
+#      - .env
+#    environment:
+#      SPRING_APPLICATION_JSON: '{
+#            "spring.datasource.url"  : "jdbc:postgresql://postgre-fast-gaz-db:${POSTGRES_PORT_MAPPER}/${POSTGRES_DATABASE}",
+#            "spring.datasource.username" : "ZmFzdGdhego=",
+#            "spring.datasource.password" : "RmFzdGdhejEvQAo=",
+#            "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.PostgreSQLDialect",
+#            "spring.jpa.hibernate.ddl-auto" : "update",
+#            "spring.profiles.active" : "prod"
+#          }'
+#    networks:
+#      - network-fast-gaz
+#    restart: unless-stopped
+
+networks:
+  network-afriland:
+    driver: bridge
+volumes:
+  network-afriland:

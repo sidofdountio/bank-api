@@ -1,0 +1,107 @@
+server:
+  port: ${SERVER_PORT}
+  error:
+    include-binding-errors: always
+    include-message: always
+  servlet:
+    context-path: /api/v1/afriland
+
+spring:
+  profiles:
+    active: ${ACTIVE_PROFILE:dev}
+  main:
+    web-application-type: servlet
+
+  # Database configuration
+  datasource:
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+
+  jpa:
+    open-in-view: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop  # Good for development, change to 'update' or 'validate' later
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc.batch_size: 25
+        order_inserts: true
+        order_updates: true
+    database: postgresql
+
+  sql:
+    init:
+      mode: always
+      continue-on-error: false
+      data-locations: classpath:/data/data.sql
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 50MB
+      location: ${java.io.tmpdir}
+
+  mail:
+    host: ${EMAIL_HOST}
+    port: ${EMAIL_PORT}
+    username: ${EMAIL_ID}
+    password: ${EMAIL_PASSWORD}
+    default-encoding: UTF-8
+    properties:
+      mail:
+        protocol: smtp
+        mime:
+          charset: UTF-8
+        smtp:
+          connectiontimeout: 10000
+          timeout: 10000
+          writetimeout: 10000
+          auth: true
+          ssl:
+            trust: "*"
+          starttls:
+            enable: true
+
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      fail_on_empty_beans: false
+      close_closeable: true
+      flush_after_write_value: true
+      write_date_keys_as_timestamps: false
+    deserialization:
+      fail_on_unknown_properties: false
+    time-zone: UTC
+
+application:
+  title: Afriland-app
+  version: 0.0.1
+  image: ${APP_IMAGE:https://cdn-icons-png.flaticon.com/512/149/149071.png}
+
+  origin: ${ORIGIN}
+  file:
+    upload:
+      photos-output-path: ${UPLOAD_PATH:./upload-image}
+
+  security:
+    jwt:
+      secret-key: ${SECRETKEY}
+      expiration: ${EXPIRATION}
+      refresh-token-expiration: ${REFRESH_TOKEN_EXPIRATION:604800000}
+
+  mailing:
+    email: ${COMPANY_EMAIL}
+    front-end:
+      activation-url: ${ACTIVATION_URL}
