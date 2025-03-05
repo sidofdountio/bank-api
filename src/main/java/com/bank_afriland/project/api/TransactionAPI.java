@@ -1,5 +1,6 @@
 package com.bank_afriland.project.api;
 
+import com.bank_afriland.project.request.TransactionRequest;
 import com.bank_afriland.project.service.TransactionService;
 import com.bank_afriland.reponse.CustomResponse;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 /**
@@ -34,7 +36,7 @@ public class TransactionAPI {
     @ResponseStatus(OK)
     public ResponseEntity<CustomResponse> getTransactions() {
         return new ResponseEntity<>(CustomResponse.builder()
-                .data(Map.of("transaction", transactionService.getAllTransactionOrderByDate()))
+                .data(Map.of("transactions", transactionService.getAllTransactionOrderByDate()))
                 .timeStamp(LocalDateTime.now())
                 .statusCode(OK.value())
                 .status(OK)
@@ -48,6 +50,18 @@ public class TransactionAPI {
                                                               @RequestParam(name = "size", defaultValue = "10", required = false) int size) {
         return new ResponseEntity<>(CustomResponse.builder()
                 .data(Map.of("page", transactionService.getTransactionWithPagination(accountId, page, size)))
+                .timeStamp(LocalDateTime.now())
+                .statusCode(OK.value())
+                .status(OK)
+                .message("Transaction successfully retrieved")
+                .build(), OK);
+    }
+
+    @PostMapping("/deposit")
+    @ResponseStatus(CREATED)
+    public ResponseEntity<CustomResponse> makeDeposit(@RequestBody TransactionRequest request) {
+        return new ResponseEntity<>(CustomResponse.builder()
+                .data(Map.of("transaction", transactionService.makeDeposit(request  )))
                 .timeStamp(LocalDateTime.now())
                 .statusCode(OK.value())
                 .status(OK)

@@ -1,9 +1,11 @@
 package com.bank_afriland.project.model;
 
+import com.bank_afriland.project.model.entity.AuditMetadata;
 import com.bank_afriland.project.model.enumeration.TransactionStatus;
 import com.bank_afriland.project.model.enumeration.TransactionType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +32,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class Transaction {
+public class Transaction extends AuditMetadata {
     @Id
     @SequenceGenerator(name = "transaction_id_sequence", allocationSize = 1, initialValue = 1, sequenceName = "transaction_id_sequence")
     @GeneratedValue(generator = "transaction_id_sequence", strategy = GenerationType.SEQUENCE)
@@ -55,7 +57,7 @@ public class Transaction {
 
     private BigDecimal debit;
     private BigDecimal credit;
-
+    @Positive
     @Column(nullable = false, precision = 19, scale = 4)
     private BigDecimal amount;
 

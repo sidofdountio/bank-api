@@ -30,7 +30,7 @@ spring:
     show-sql: true
     generate-ddl: true
     hibernate:
-      ddl-auto: create-drop  # Good for development, change to 'update' or 'validate' later
+      ddl-auto: update  # Good for development, change to 'update' or 'validate' later
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

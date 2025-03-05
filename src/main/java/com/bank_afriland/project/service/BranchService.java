@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
+
 /**
  * <blockquote><pre>
  * Author   : @Dountio
@@ -39,7 +41,19 @@ public class BranchService {
         return branchRepository.save(branch);
     }
 
+    public Branch saveBranch(BranchRequest request) {
+        Bank bank = bankService.getBankByCode(request.bankCode());
+
+        Branch branch = branchMapper.toBranch(request, request.bankCode());
+
+        if(branch.getBranchCode().length() != 5  || !branch.getBranchCode().matches("\\d{5}")){
+            throw new IllegalStateException("Branch code must have five digit and contain only digits");
+        }
+        return branchRepository.save(branch);
+    }
+
     public Branch getBranchByCode(String branchCode) {
+        log.info("Fetch brache");
         return branchRepository.findByBranchCode(branchCode)
                 .orElseThrow(() -> new EntityNotFoundException("Branch not found"));
     }
@@ -49,4 +63,7 @@ public class BranchService {
                 .orElseThrow(() -> new EntityNotFoundException("Branch not found"));
     }
 
+    public Collection<Branch> getAllBranches() {
+        return branchRepository.findAll();
+    }
 }

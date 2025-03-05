@@ -1,6 +1,7 @@
 package com.bank_afriland.project.request;
 
 import com.bank_afriland.project.model.enumeration.TransactionType;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -21,7 +22,7 @@ import java.time.LocalDate;
 public record TransactionRequest(
         TransactionType transactionType,
         @NotNull(message = "Amount is required")
-        @Positive(message = "Amount must be positive")
+        @Positive(message = "49")
         BigDecimal amount,
         @NotNull(message = "50")
         LocalDate createdAt,
@@ -30,6 +31,7 @@ public record TransactionRequest(
         BigDecimal credit,
         Long sourceAccountId,
         @NotNull(message = "Account number is required")
+        @NotEmpty(message = "Account number is required")
         String accountNumber
 ) {
 }

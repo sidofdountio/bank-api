@@ -66,10 +66,10 @@ public class BeansConfig {
     }
 
 
-//    @Bean
-//    public AuditorAware<Users> auditorProvider() {
-//        return new SpringSecurityAuditorAware();
-//    }
+    @Bean
+    public AuditorAware<String> auditorProvider() {
+        return new SpringSecurityAuditorAware();
+    }
 
 
     @Bean

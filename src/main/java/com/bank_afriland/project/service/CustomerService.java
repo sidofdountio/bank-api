@@ -51,6 +51,7 @@ public class CustomerService {
     }
 
     public Customer getCustomerById(Long id) {
+        log.info("Fetch customer by customer id {}",id);
         return customerRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found with ID: " + id));
     }

@@ -49,8 +49,8 @@ public class SecurityConfig {
                                 .requestMatchers("/actuator/**").permitAll()
 
                                 .requestMatchers("/api/v1/afriland/users/**").hasAnyRole(UserRole.ADMIN.name(),UserRole.SYSADMIN.name())
-
-
+                                .requestMatchers("/api/v1/afriland/customers/**").hasAnyRole(UserRole.ADMIN.name(),UserRole.SYSADMIN.name())
+                                .requestMatchers("/api/v1/afriland/accounts/**").hasAnyRole(UserRole.ADMIN.name(),UserRole.SYSADMIN.name())
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

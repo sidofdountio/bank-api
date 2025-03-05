@@ -37,8 +37,9 @@ public class AccountService {
     public Account createNewAccount(AccountRequest request) {
         Customer customerById = customerService.getCustomerById(request.customerId());
         Account accountToSave = accountMapper.toAccount(request, customerById);
-        log.info("saving new account ");
+        log.info("saving new account {}", accountToSave);
         return accountRepository.save(accountToSave);
+//        return accountToSave;
     }
 
     public Account getBankAccountByCustomer(String customerEmail){

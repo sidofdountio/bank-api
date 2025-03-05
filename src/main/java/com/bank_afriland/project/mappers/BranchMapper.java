@@ -25,10 +25,10 @@ public class BranchMapper {
     private final BankService bankService;
 
     public Branch  toBranch(BranchRequest request,String bankCode){
-        Bank bank = bankService.getBankByCode(bankCode);
+        Bank bank = bankService.getBankByCode(bankCode.trim());
         return Branch.builder()
-                .branchCode(request.branchCode())
-                .email(request.email())
+                .branchCode(request.branchCode().trim())
+                .email(request.email().trim())
                 .bank(bank)
                 .address(request.address())
                 .name(request.name())

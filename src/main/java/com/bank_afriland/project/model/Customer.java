@@ -32,7 +32,6 @@ import java.util.List;
 @NoArgsConstructor
 @SuperBuilder
 public class Customer {
-
     @Id
     @SequenceGenerator(name = "sequence_customer_id", allocationSize = 1, initialValue = 1, sequenceName = "sequence_customer_id")
     @GeneratedValue(generator = "sequence_customer_id", strategy = GenerationType.SEQUENCE)

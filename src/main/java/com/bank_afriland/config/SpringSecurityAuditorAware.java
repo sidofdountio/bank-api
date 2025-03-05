@@ -1,10 +1,10 @@
 package com.bank_afriland.config;
 
-import com.bank_afriland.security.model.Users;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 
@@ -20,15 +20,33 @@ import java.util.Optional;
  * </blockquote></pre>
  */
 
-public class SpringSecurityAuditorAware implements AuditorAware<Users> {
+//public class SpringSecurityAuditorAware implements AuditorAware<Users> {
+//
+//    @Override
+//    public Optional<Users> getCurrentAuditor() {
+//
+//        return Optional.ofNullable(SecurityContextHolder.getContext())
+//                .map(SecurityContext::getAuthentication)
+//                .filter(Authentication::isAuthenticated)
+//                .map(Authentication::getPrincipal)
+//                .map(Users.class::cast);
+//    }
+//}
+public class SpringSecurityAuditorAware implements AuditorAware<String> {
 
     @Override
-    public Optional<Users> getCurrentAuditor() {
-
+    public Optional<String> getCurrentAuditor() {
         return Optional.ofNullable(SecurityContextHolder.getContext())
                 .map(SecurityContext::getAuthentication)
                 .filter(Authentication::isAuthenticated)
-                .map(Authentication::getPrincipal)
-                .map(Users.class::cast);
+                .map(authentication -> {
+                    Object principal = authentication.getPrincipal();
+
+                    if (principal instanceof UserDetails) {
+                        return ((UserDetails) principal).getUsername();
+                    }
+                    return principal.toString();
+                });
     }
 }
+

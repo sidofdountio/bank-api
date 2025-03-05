@@ -1,5 +1,7 @@
 package com.bank_afriland.project.request;
 
+import jakarta.validation.constraints.NotNull;
+
 /**
  * <blockquote><pre>
  * Author   : @Dountio
@@ -12,7 +14,9 @@ package com.bank_afriland.project.request;
  */
 
 public record BranchRequest(
-        Long bankId,
+        @NotNull(message = "Bank code cannot be empty")
+        String bankCode,
+        @NotNull(message = "Bank code cannot be empty")
         String  branchCode,
         String name,
         String address,

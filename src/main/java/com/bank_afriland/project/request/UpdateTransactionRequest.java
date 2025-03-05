@@ -1,5 +1,7 @@
 package com.bank_afriland.project.request;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 
 /**
@@ -15,6 +17,8 @@ import java.time.LocalDate;
 
 public record UpdateTransactionRequest(
         String description,
-        LocalDate createAt
+        LocalDate createAt,
+        @NotNull(message = "Must select the id")
+        Long transactionId
 ) {
 }

@@ -13,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -36,7 +37,7 @@ import java.util.List;
 @Table(
         name = "users",
         uniqueConstraints = @UniqueConstraint(columnNames = "email", name = "UQ_user_email"))
-public class Users extends AuditMetadata implements UserDetails {
+public class Users extends AuditMetadata implements UserDetails, Principal {
     @Id
     @SequenceGenerator(name = "users_id_sequence", allocationSize = 0, initialValue = 0, sequenceName = "users_id_sequence")
     @GeneratedValue(generator = "users_id_sequence", strategy = GenerationType.SEQUENCE)
@@ -47,14 +48,6 @@ public class Users extends AuditMetadata implements UserDetails {
     private String lastName;
 
     private String firstName;
-
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Token> tokens = new ArrayList<>();
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "user")
-    private List<Token> tokens = new ArrayList<>();
-
 
     @NotEmpty(message = "Email name cannot be empty")
     @Email(message = "Invalid email. Please enter valid email.")
@@ -73,6 +66,9 @@ public class Users extends AuditMetadata implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens = new ArrayList<>();
     public Users(String lastName, String email, String password, String phone, String address, String imageUrl) {
         this.lastName = lastName;
         this.email = email;
@@ -215,5 +211,10 @@ public class Users extends AuditMetadata implements UserDetails {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    @Override
+    public String getName() {
+        return "";
     }
 }

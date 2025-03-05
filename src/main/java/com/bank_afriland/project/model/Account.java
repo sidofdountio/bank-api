@@ -5,10 +5,14 @@ import com.bank_afriland.project.model.enumeration.AccountStatus;
 import com.bank_afriland.project.model.enumeration.AccountType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -35,10 +39,13 @@ public class Account extends AuditMetadata {
     @GeneratedValue(generator = "account_id_sequence", strategy = GenerationType.SEQUENCE)
     private Long accountId;
 
+    @NotEmpty(message = "accountNumber should not be empty")
     @Column(nullable = false, unique = true)
     private String accountNumber;
 
 
+
+    @Positive
     @Column(nullable = false, precision = 19, scale = 4)
     private BigDecimal balance;
     @Column(nullable = false, precision = 19, scale = 4)
@@ -50,9 +57,11 @@ public class Account extends AuditMetadata {
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
+    @NotEmpty(message = "rib should not be empty")
     @Column(nullable = false, unique = true)
     private String rib; // RIB specific to this acc
 
+    @NotEmpty(message = "iban should not be empty")
     @Column(nullable = false, unique = true)
     private String iban; // IBAN specific to this account
 
@@ -68,13 +77,32 @@ public class Account extends AuditMetadata {
 //    @Column(nullable = false)
 //    private String currency;
 
+    @Column(nullable = false)
+    private LocalDate createdAt;
+
     @Column(precision = 19, scale = 4)
     private BigDecimal dailyTransactionLimit;
+    private boolean active =true;
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")
     private List<Transaction> transactions;
 
-    private boolean active =true;
 
+    @Override
+    public String toString() {
+        return "Account{" +
+                "accountId=" + accountId +
+                ", accountNumber='" + accountNumber + '\'' +
+                ", balance=" + balance +
+                ", initialBalance=" + initialBalance +
+                ", status=" + status +
+                ", accountType=" + accountType +
+                ", rib='" + rib + '\'' +
+                ", iban='" + iban + '\'' +
+                ", branch=" + branch +
+                ", customer=" + customer +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }

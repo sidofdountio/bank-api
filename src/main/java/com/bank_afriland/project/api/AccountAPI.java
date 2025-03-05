@@ -3,6 +3,7 @@ package com.bank_afriland.project.api;
 import com.bank_afriland.project.request.AccountRequest;
 import com.bank_afriland.project.service.AccountService;
 import com.bank_afriland.reponse.CustomResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,13 +29,13 @@ import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequestMapping("/accounts")
 @RequiredArgsConstructor
-public class AccountController {
+public class AccountAPI {
 
     private final AccountService accountService;
 
     @PostMapping("/save")
     @ResponseStatus(CREATED)
-    public ResponseEntity<CustomResponse> save(@RequestBody AccountRequest request) {
+    public ResponseEntity<CustomResponse> save(@RequestBody @Valid AccountRequest request) {
         return new ResponseEntity<>(
                 CustomResponse.builder()
                         .data(Map.of("account", accountService.createNewAccount(request)))

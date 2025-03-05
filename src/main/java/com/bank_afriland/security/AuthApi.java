@@ -76,7 +76,7 @@ public class AuthApi {
     public ResponseEntity<CustomResponse> login(@RequestBody @Valid AuthRequest request) throws  BadRequestException {
         return new ResponseEntity<>(
                 CustomResponse.builder()
-                        .data(Map.of("token", authenticateService.authenticate(request)))
+                        .data(Map.of("authResponse", authenticateService.authenticate(request)))
                         .status(OK)
                         .message("users logged in")
                         .statusCode(OK.value())

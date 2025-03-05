@@ -1,5 +1,6 @@
 package com.bank_afriland.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -50,6 +51,7 @@ public class Bank {
     private String email;
     private String website;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "bank")
     private List<Branch> branches;
 }

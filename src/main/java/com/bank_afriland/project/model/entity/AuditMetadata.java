@@ -44,7 +44,7 @@ public class AuditMetadata {
 //    private Long id;
 
     @CreatedBy
-    private Users createdBy;
+    private String createdBy;
 
     @CreatedDate
     private Instant createdDate;

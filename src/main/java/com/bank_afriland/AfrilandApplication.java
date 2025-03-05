@@ -1,9 +1,10 @@
 package com.bank_afriland;
 
 import com.bank_afriland.project.model.Bank;
+import com.bank_afriland.project.model.Branch;
 import com.bank_afriland.project.repo.BankRepository;
+import com.bank_afriland.project.repo.BranchRepository;
 import com.bank_afriland.project.request.BranchRequest;
-import com.bank_afriland.project.service.BranchService;
 import com.bank_afriland.security.UserRole;
 import com.bank_afriland.security.model.Users;
 import com.bank_afriland.security.repository.UserRepository;
@@ -25,11 +26,12 @@ public class AfrilandApplication {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(UserRepository userRepository, BankRepository bankRepository,
-                                        BranchService branchService) {
+    CommandLineRunner commandLineRunner(UserRepository userRepository,
+                                        BankRepository bankRepository,
+                                        BranchRepository branchRepository) {
         return (args -> {
             var ADMIN = Users.builder().lastName("admin").firstName("admin").email("admin@gmail.com").password("$2a$12$phLQVs8MxIhnaaBsZn1MTu5BB3qsrFeuxA9heJFwkqsCEB3K7lTFe").phone("+237683234534").enable(true).accountLocked(false).role(UserRole.ADMIN).imageUrl(DEFAULT_USER_IMAGE_PROFILE).build();
-//            ADMIN.setUserId(0L);
+            ADMIN.setUserId(0L);
             userRepository.save(ADMIN);
 
             Bank AFRILAND = Bank.builder()
@@ -40,10 +42,21 @@ public class AfrilandApplication {
                     .swiftCode("CCEICMCX")
                     .ribKey("04")
                     .build();
+            AFRILAND.setId(1L);
             bankRepository.save(AFRILAND);
 
-            BranchRequest request = new BranchRequest(0L,"00034","FIRST BANK MENDONG","DERRIERE LE LYCEE MENDONG, YAOUNDE","qualite@aîrilandfirstbank.eom");
-            branchService.createBranch(request,"10005");
+            BranchRequest request = new BranchRequest("10005","00034","FIRST BANK MENDONG","DERRIERE LE LYCEE MENDONG, YAOUNDE","qualite@aîrilandfirstbank.eom");
+
+            Branch branch = Branch.builder()
+                    .branchCode(request.branchCode().trim())
+                    .email(request.email().trim())
+                    .bank(AFRILAND)
+                    .address(request.address())
+                    .name(request.name())
+                    .build();
+
+            branch.setId(1L);
+            branchRepository.save(branch);
         });
     }
 

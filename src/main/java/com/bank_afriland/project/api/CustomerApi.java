@@ -32,24 +32,23 @@ public class CustomerApi {
 
     private final CustomerService customerService;
 
-    @GetMapping("/customer")
-    public ResponseEntity<CustomResponse> getCustomerByiD(@RequestParam(name = "customerId") Long customerId) {
-        return new ResponseEntity<>(CustomResponse.builder()
-                .timeStamp(now())
-                .data(of("customer", customerService.getCustomerById(customerId)))
-                .message("Users retrieved")
-                .status(OK)
-                .statusCode(OK.value())
-                .build(), OK);
-    }
-
-
     //
     @GetMapping
     public ResponseEntity<CustomResponse> getCustomers() {
         return new ResponseEntity<>(CustomResponse.builder()
                 .timeStamp(now())
                 .data(of("customers", customerService.getAllCustomers()))
+                .message("Users retrieved")
+                .status(OK)
+                .statusCode(OK.value())
+                .build(), OK);
+    }
+
+    @GetMapping("/customer")
+    public ResponseEntity<CustomResponse> getCustomerByiD(@RequestParam(name = "customerId") Long customerId) {
+        return new ResponseEntity<>(CustomResponse.builder()
+                .timeStamp(now())
+                .data(of("customer", customerService.getCustomerById(customerId)))
                 .message("Users retrieved")
                 .status(OK)
                 .statusCode(OK.value())

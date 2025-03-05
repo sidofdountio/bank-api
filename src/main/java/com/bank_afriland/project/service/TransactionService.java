@@ -47,6 +47,7 @@ public class TransactionService {
     private final BigDecimal MIN_BALANCE_REQUIRED = new BigDecimal("100000.00");
 
     public List<Transaction> getAllTransactionOrderByDate() {
+        log.info("Fetch transaction");
         return transactionRepository.findAllTransactionsOrderByCreatedAtAsc();
     }
 
@@ -62,8 +63,8 @@ public class TransactionService {
                 .orElseThrow(() -> new IllegalStateException("We cannot find the  transaction " + transactionId));
     }
 
-    public void updateTransactionDescription(Long transactionId, UpdateTransactionRequest request) {
-        Transaction transactionToUpdate = getTransaction(transactionId);
+    public void updateTransactionDescription(UpdateTransactionRequest request) {
+        Transaction transactionToUpdate = getTransaction(request.transactionId());
         transactionToUpdate.setDescription(request.description());
         transactionToUpdate.setCreatedAt(request.createAt());
         log.info("transaction updated");

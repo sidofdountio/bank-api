@@ -31,8 +31,5 @@ public class AuthRequest {
  @Size(min = 8, message = "Password should be 8 character long minimum")
  private String password;
 
- public AuthRequest(String email, String password) {
-  this.email = email;
-  this.password = password;
- }
+
 }
